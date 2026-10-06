@@ -1,6 +1,6 @@
-# Viridian CLI
+# DP Python CLI
 
-`viridian-cli` is a Python command-line toolkit for managing the local Viridian service stack. Each service is exposed as its own CLI entry point, with shared lifecycle commands for installation, container control, and status checking.
+`dp-python-cli` is a Python command-line toolkit for managing the local service stack. Each service is exposed as its own CLI entry point, with shared lifecycle commands for installation, container control, and status checking.
 
 Requirements: Python 3.12 or newer.
 
@@ -16,6 +16,7 @@ The project installs these console entry points:
 - `azurite`
 - `oracle`
 - `postgres`
+- `dp-cert-copy`
 
 Each entry point uses the same application logic and chooses its behaviour from the executable name.
 
@@ -92,13 +93,13 @@ These paths are resolved in the code by app name, so the default directory is ap
 On Ubuntu 24.04+, if the venv environment is required, then install from GitHub with `pipx`:
 
 ```bash
-pipx install git+https://github.com/NLNZDigitalPreservation/viridian-cli.git
+pipx install git+https://github.com/NLNZDigitalPreservation/dp-python-cli.git
 ```
 
 RHEL, if the venv envrionment is not mandatory, then install from Github with "pip":
 
 ```bash
-pip3.12 install https://github.com/NLNZDigitalPreservation/viridian-cli/archive/refs/heads/main.zip --force-reinstall
+pip3.12 install https://github.com/NLNZDigitalPreservation/dp-python-cli/archive/refs/heads/main.zip --force-reinstall
 ```
 
 Or install from a local checkout:
@@ -129,7 +130,7 @@ hash -r
 sudo -i hash -r
 
 # Install the CLI directly from GitHub
-sudo pipx install --global --force git+https://github.com/NLNZDigitalPreservation/viridian-cli.git
+sudo pipx install --global --force git+https://github.com/NLNZDigitalPreservation/dp-python-cli.git
 ```
 
 ---
