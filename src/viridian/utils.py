@@ -7,8 +7,8 @@ import shutil
 import subprocess
 from importlib import resources
 from pathlib import Path
-from typing import Dict, List, Optional
-from dotenv import set_key
+from typing import Dict, List, Mapping, Optional
+from dotenv import dotenv_values, set_key
 
 DEFAULT_INSTALL_PATH = "/data/viridian/conf"
 DEFAULT_DATA_PATH = "/data/viridian/persistent"
@@ -20,9 +20,15 @@ DEFAULT_CONFIG_SUBDIR = "viridian"
 DEFAULT_CONFIG_FILE = "config.json"
 
 
-def run(command: List[str], check: bool = True) -> subprocess.CompletedProcess:
+def run(
+    command: List[str],
+    check: bool = True,
+    env: Optional[Mapping[str, str]] = None,
+) -> subprocess.CompletedProcess:
     print(f"Running: {' '.join(command)}")
-    return subprocess.run(command, text=True, check=check)
+    print(f"Environment: {env if env is not None else os.environ}")
+
+    return subprocess.run(command, text=True, check=check, env=env)
 
 
 def select_engine(engine: str) -> str:
@@ -106,13 +112,22 @@ def run_installed_compose(
         raise FileNotFoundError(
             f"{compose_file} not found. Run '{project_name} install' first."
         )
+
+    compose_env = os.environ.copy()
+
+    base_env = install_path.joinpath(".base.env")
+    if base_env.exists():
+        for key, value in dotenv_values(base_env).items():
+            if value is not None:
+                compose_env[key] = value
+
     compose_cmd = select_compose_command(engine)
     cmd = compose_cmd + ["-p", project_name, "-f", str(compose_file)]
     env_file = install_path / ".env"
     if env_file.exists():
         cmd += ["--env-file", str(env_file)]
     cmd += extra
-    run(cmd)
+    run(cmd, env=compose_env)
 
 
 def path_state(path: Path) -> str:
