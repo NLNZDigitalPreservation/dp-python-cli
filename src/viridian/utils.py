@@ -26,7 +26,7 @@ def run(
     env: Optional[Mapping[str, str]] = None,
 ) -> subprocess.CompletedProcess:
     print(f"Running: {' '.join(command)}")
-    print(f"Environment: {env if env is not None else os.environ}")
+    # print(f"Environment: {env if env is not None else os.environ}")
 
     return subprocess.run(command, text=True, check=check, env=env)
 
